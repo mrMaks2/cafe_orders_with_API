@@ -2,7 +2,7 @@
 {% url 'orders:delete_order' as delete_order_url %}
 {% url 'orders:search_order' as search_order_url %}
 {% url 'orders:change_status' as change_status_url %}
-{% url 'orders:revenue' as revenue_url %}
+{% url 'orders:revenue_report' as revenue_url %}
 
 <!doctype html>
 <html lang="en">
@@ -37,7 +37,7 @@
             <a class="nav-link" href="{% url 'orders:change_status' %}">Изменить статус заказа</a>
           </li>
             <li class="nav-item {% if request.path == revenue_url %} active {% endif %}">
-            <a class="nav-link" href="{% url 'orders:revenue' %}">Выручка</a>
+            <a class="nav-link" href="{% url 'orders:revenue_report' %}">Выручка</a>
           </li>
         </ul>
       </div>

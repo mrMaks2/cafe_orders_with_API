@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<head>
+    <title>Отчет о выручке</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Отчет о выручке</h1>
+        <p>Общая выручка за оплаченные заказы: {{ total_revenue }}</p>
+        <a href="{% url 'orders:order_list' %}" class="btn btn-secondary my-2">К списку заказов</a>
+    </div>
+</body>
+
+{% endblock %}

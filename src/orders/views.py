@@ -1,12 +1,16 @@
+from lib2to3.fixes.fix_input import context
+
 from django.db.models import Sum
-from django.db.transaction import commit
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Order
 from .forms import *
 
 def order_list(request):
     orders = Order.objects.all()
+    for order in orders:
+        order.items = eval(order.items)
+        orders.order = order
     return render(request, 'order_list.html', {'orders': orders})
 
 def add_order(request):
@@ -28,7 +32,6 @@ def add_order(request):
             return redirect('orders:order_list')
         else:
             messages.error(request, "Ошибка при создании заказа. Пожалуйста, исправьте ошибки в форме.")
-            return redirect('orders:add_order.html')
     form = OrderAddForm()
     return render(request, 'add_order.html', {'form': form})
 
@@ -59,17 +62,18 @@ def change_status(request):
     if request.method == 'POST':
         order_id = request.POST['order']
         order = Order.objects.get(id=order_id)
-        order.status = request.POST['new_status']
-        if order:
+        form = OrderChangeStatusForm(request.POST)
+        if form.is_valid():
+            order.status = request.POST['new_status']
+            order.items = eval(order.items)
             order.save()
             messages.success(request,'Статус заказа успешно изменен')
-            return redirect('orders:order_list')
+            return redirect('orders:change_status')
         else:
             messages.error(request, 'Такого заказа не существует')
-            return redirect('orders:change_status.html')
     form = OrderChangeStatusForm()
     return render(request, 'change_status.html', {'form': form})
 
 def revenue_report(request):
-    total_revenue = Order.objects.filter(status='paid').aggregate(Sum('total_price'))['total_price__sum'] or 0
+    total_revenue = Order.objects.filter(status='Оплачено').aggregate(Sum('total_price'))['total_price__sum'] or 0
     return render(request, 'revenue_report.html', {'total_revenue': total_revenue})

@@ -29,13 +29,12 @@ class OrderSearchForm(forms.Form):
 
 class OrderChangeStatusForm(forms.Form):
     order = forms.ModelChoiceField(label='Изменение статуса заказа',
-                                   queryset=Order.objects.only('id'),
+                                   queryset=Order.objects.all(),
                                    widget=forms.Select(attrs={
                                        'class': 'form-control js-example-basic-multiple'
                                    }))
 
-    new_status = forms.CharField(label='Новый статус',
-                                 widget=forms.TextInput(attrs={
-                                    'class': 'form-control',
-                                    'placeholder': 'Введите новый статус (“в ожидании”, “готово”, “оплачено”)'
+    new_status = forms.ChoiceField(choices=Order.Status.choices,
+                                 widget=forms.Select(attrs={
+                                    'class': 'form-control'
                                  }))

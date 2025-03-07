@@ -12,10 +12,17 @@ class Order(models.Model):
         verbose_name='Общая стоимость',
         default=0.00
     )
+
+    class Status(models.TextChoices):
+        PENDING = 'В ожидании'
+        READY = 'Готово'
+        PAID = 'Оплачено'
+
     status = models.CharField(
-        max_length=10,
-        default='В ожидании',
-        verbose_name='Статус заказа'
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING,
+        verbose_name= "Статус"
     )
 
     def save(self, *args, **kwargs):

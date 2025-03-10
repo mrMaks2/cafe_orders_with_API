@@ -2,8 +2,10 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 class Order(models.Model):
-
-    table_number = models.IntegerField(verbose_name='Номер стола')
+    '''
+    Модель заказа для кафе
+    '''
+    table_number = models.PositiveIntegerField(verbose_name='Номер стола')
     items = models.TextField(verbose_name='Список блюд')
     total_price = models.DecimalField(
         max_digits=10,
@@ -26,10 +28,16 @@ class Order(models.Model):
     )
 
     def save(self, *args, **kwargs):
+        '''
+        Вычисляет итоговую стоимость заказа на основе блюд при сохранении
+        '''
         self.total_price = sum(item['price'] for item in self.items)
         super().save(*args, **kwargs)
 
     def __str__(self):
+        '''
+        Переопределение неформального строкового наименования заказа
+        '''
         return f'Заказ под номером ID {self.id}'
 
     class Meta:

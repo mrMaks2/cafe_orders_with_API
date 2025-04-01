@@ -16,7 +16,7 @@
 1.  Клонируйте репозиторий:
 
     ```bash
-    git clone <ваш_репозиторий>
+    git clone https://github.com/mrMaks2/cafe_orders_with_API.git
     cd cafe_management
     ```
 
